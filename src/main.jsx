@@ -5,12 +5,32 @@ import { createBrowserRouter, Outlet, RouterProvider, } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import App from './App';
 import Auth from './Auth';
+import Home from './Home/Home';
+import Register from './Register';
+import Login from './Login';
+import AddSurvey from '../AddSurvey';
 const qc = new QueryClient();
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App></App>,
     children: [
+      {
+        path:"/",
+        element:<Home></Home>
+      },  
+      {
+        path:'/register',
+        element:<Register></Register>
+      },
+      {
+        path:"/login",
+        element:<Login></Login>
+      },
+      {
+        path:"/addsurvey",
+        element:<AddSurvey></AddSurvey>
+      }
     ]
   }
 ])

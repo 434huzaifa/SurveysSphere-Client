@@ -1,5 +1,4 @@
 import { createContext,useState,useEffect} from 'react';
-import {useNavigate } from 'react-router-dom'
 import { getAuth, onAuthStateChanged, signOut, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import app from './firebase.init.js';
 import useAxios from './useAxios.js';
@@ -9,7 +8,7 @@ export const myContext = createContext(null)
 const Auth = ({children}) => {
     const caxios=useAxios()
     const [user, setUser] = useState([]);
-    const navigate = useNavigate()
+    const [role, setRole] = useState(null);
     function signUpUser(email, password) {
       return createUserWithEmailAndPassword(auth, email, password)
     }
@@ -20,15 +19,21 @@ const Auth = ({children}) => {
       return signInWithEmailAndPassword(auth, email, password)
     }
     function LogOut() {
-      navigate('/login')
       caxios.post('/logout').then().catch(err=>err)
       return signOut(auth)
+    }
+    function userData(data){
+      data.role="User"
+      return caxios.post("/insertuser",data)
     }
     useEffect(() => {
       const unSubscribe = onAuthStateChanged(auth, currentUser => {
         setUser(currentUser);
         if (currentUser && !!currentUser?.email) {
-          caxios.post('/jsonwebtoken',{email:currentUser.email}).then(res=>res).catch(error=>console.log(error))
+          caxios.get(`/getrole?mail=${currentUser?.email}`).then(res=>{
+            setRole(res.data)
+            caxios.post('/jsonwebtoken',{email:currentUser.email,role:res.data}).then(res=>res).catch(error=>console.log(error))
+          })
         }else{
           caxios.post('/logout').then().catch(err=>err)
         }
@@ -43,6 +48,8 @@ const Auth = ({children}) => {
         SignIn,
         LogOut,
         googlemama,
+        userData,
+        role
         
       }
     
