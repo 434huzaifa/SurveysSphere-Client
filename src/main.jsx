@@ -9,6 +9,7 @@ import Home from './Home/Home';
 import Register from './Register';
 import Login from './Login';
 import AddSurvey from '../AddSurvey';
+import Details from './Details';
 const qc = new QueryClient();
 const router = createBrowserRouter([
   {
@@ -30,6 +31,10 @@ const router = createBrowserRouter([
       {
         path:"/addsurvey",
         element:<AddSurvey></AddSurvey>
+      },
+      {
+        path:"/details/:id",
+        element:<Details></Details>
       }
     ]
   }

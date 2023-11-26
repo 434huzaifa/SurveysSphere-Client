@@ -3,7 +3,7 @@ import { BsGoogle } from "react-icons/bs";
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import useAuth from "./useAuth";
 const Login = () => {
-    const { SignIn, googlemama, userData ,} = useAuth()
+    const { SignIn, googlemama, userData ,setRole} = useAuth()
     const navigate = useNavigate()
     const location = useLocation()
     function GetFromForm(e) {
@@ -21,11 +21,13 @@ const Login = () => {
         }
         ).catch(err => error.textContent = err.message)
     }
-    function itsgoogletime() {
-        
+    async function itsgoogletime() {
         googlemama()
-            .then((res) => {
-                userData({ name: res.user.displayName, email: res.user.email})
+            .then(async (res) => {
+                await userData({ name: res.user.displayName, email: res.user.email}).then(res=>{
+                    console.log(res);
+                    setRole(res.data.role)
+                })
                 if (location?.state != null) {
                     navigate(location.state)
                 } else {

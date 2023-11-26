@@ -50,9 +50,6 @@ const AddSurvey = () => {
                             <option value="Technology and Innovation">Technology and Innovation</option>
                         </Select>
                     </div>
-                    {
-                        
-                    }
                     <Button type="submit" className="mt-4 w-full" isProcessing={mutation.isPending} processingSpinner={<AiOutlineLoading className="h-6 w-6 animate-spin" />} >Post</Button>
                 </form>
 

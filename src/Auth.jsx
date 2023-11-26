@@ -30,10 +30,15 @@ const Auth = ({children}) => {
       const unSubscribe = onAuthStateChanged(auth, currentUser => {
         setUser(currentUser);
         if (currentUser && !!currentUser?.email) {
-          caxios.get(`/getrole?mail=${currentUser?.email}`).then(res=>{
-            setRole(res.data)
-            caxios.post('/jsonwebtoken',{email:currentUser.email,role:res.data}).then(res=>res).catch(error=>console.log(error))
-          })
+          if (role!=null) {
+            caxios.post('/jsonwebtoken',{email:currentUser.email,role:role}).then(res=>res).catch(error=>console.log(error))
+          }else{
+            caxios.get(`/getrole?mail=${currentUser?.email}`).then(res=>{
+              setRole(res.data)
+              caxios.post('/jsonwebtoken',{email:currentUser.email,role:res.data}).then(res=>res).catch(error=>console.log(error))
+            })
+          }
+          
         }else{
           caxios.post('/logout').then().catch(err=>err)
         }
@@ -49,7 +54,8 @@ const Auth = ({children}) => {
         LogOut,
         googlemama,
         userData,
-        role
+        role,
+        setRole
         
       }
     
