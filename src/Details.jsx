@@ -3,19 +3,41 @@ import useAuth from "./useAuth";
 import useAxios from "./useAxios";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import QueryUtil from "./QueryUtil";
-import { Card } from "flowbite-react";
+import { Avatar, Button, Card, FooterDivider, Label, Radio, TextInput, Tooltip } from "flowbite-react";
 import { Rating } from '@smastrom/react-rating'
 import '@smastrom/react-rating/style.css'
 import { useState } from "react";
+import { AiOutlineLoading } from "react-icons/ai";
+import moment from "moment";
+import PollChart from "./PollChart";
 const Details = () => {
-    const [rating, setRating] = useState(1)
+    const [rating, setRating] = useState(0)
     const { user } = useAuth()
     const caxios = useAxios()
     const { id } = useParams()
-    const location=useLocation()
-    const navigate=useNavigate()
+    const location = useLocation()
+    const navigate = useNavigate()
+
+    const commentdata = useQuery({
+        queryKey: ['comment', id],
+        queryFn: async () => {
+            let res = await caxios(`/getcomment?id=${id}`)
+            return res.data
+        },
+        enabled: !!id && !!user,
+
+    })
+    const insertcomment = useMutation({
+        mutationFn: async (data) => {
+            let res = await caxios.post('/setcomment', data)
+            return res.data
+        },
+        onSuccess: async () => {
+            commentdata.refetch()
+        }
+    })
     const s_data = useQuery({
-        queryKey: ['details', id],
+        queryKey: ['details', id, user],
         queryFn: async () => {
             let res = await caxios(`/getsurvey?id=${id}`)
             setRating(parseInt(res.data.isLike))
@@ -34,45 +56,168 @@ const Details = () => {
         activeFillColor: ['#009664', "#D22B2B"],
         inactiveFillColor: '#a8a8a8',
     };
-    const changelike=useMutation({
-        mutationFn:async(data)=>{
-            let res=await caxios.post(`/changelike`,data)
+    const changelike = useMutation({
+        mutationFn: async (data) => {
+            let res = await caxios.post(`/changelike`, data)
             return res.data
         },
         enabled: !!id && !!user,
-        onSuccess:async()=>{
+        onSuccess: async () => {
             await s_data.refetch()
         }
     })
-    async function ChangeLike(value){
-        console.log(value);
-        if (user!=null) {
-            setRating(value)
-            changelike.mutateAsync({value:value,survey:id})
-        }else{
-            navigate("/login",{state:location.pathname})
+    const vote = useMutation({
+        mutationFn: async (data) => {
+            let res = await caxios.post('/vote', data)
+            return res.data
+        },
+        onSuccess: async () => {
+            s_data.refetch()
+        }
+    })
+    function SetSurveyDetails(e) {
+        e.preventDefault()
+        let data = Object.fromEntries(new FormData(e.target))
+        data.survey = id
+        data.qsize = s_data.data.questions.length
+        if (user != null) {
+            if (s_data.data?.options == null) {
+                vote.mutateAsync(data)
+            }
+        } else {
+            navigate("/login", { state: location.pathname })
         }
     }
+    async function ChangeLike(value) {
+        if (user != null) {
+            setRating(value)
+            if (value != rating && rating == 0) {
+                changelike.mutateAsync({ value: value, survey: id })
+            }
+        } else {
+            navigate("/login", { state: location.pathname })
+        }
+    }
+    async function GetCommentData(e) {
+        e.preventDefault()
+        let data = Object.fromEntries(new FormData(e.target))
+        data.survey = id
+        console.log(data);
+        if (user != null) {
+            insertcomment.mutateAsync(data)
+            e.target.reset()
+        } else {
+            navigate("/login", { state: location.pathname })
+        }
+
+
+    }
+    console.log();
     return (
         <div>
-            <QueryUtil query={s_data}>
-                <Card className="my-4">
-                    <p className="text-4xl text-gray-800 font-bold">{s_data.data?.title}</p>
-                    <p className="text-xl text-gray-800 ">{s_data.data?.category}</p>
-                    <Rating
-                        style={{ maxWidth: 80 }}
-                        value={rating}
-                        itemStyles={customStyles}
-                        items={2}
-                        spaceBetween="medium"
-                        transition="zoom"
-                        onChange={value=>ChangeLike(value)}
-                        highlightOnlySelected
-                        isRequired
-                        isDisabled={changelike.isPending}
-                    />
-                </Card>
+            {
+                s_data.data?.options != null ? <PollChart id={id} title={s_data.data?.title} createdAt={moment(s_data.data?.createdAt).format("MMMM Do YYYY")}></PollChart> :
+                    (moment(s_data.data?.expire).isBefore(moment(), 'year') ||
+                    moment(s_data.data?.expire).isBefore(moment(), 'month') ||
+                    moment(s_data.data?.expire).isBefore(moment(), 'date')) && <PollChart id={id} title={s_data.data?.title} createdAt={moment(s_data.data?.createdAt).format("MMMM Do YYYY")}></PollChart> 
+            }
 
+            <QueryUtil query={s_data}>
+                <Card className="my-4 ">
+                    <div className="flex justify-between items-center  ">
+                        <div className="flex items-center gap-2">
+                            <p className="text-4xl  font-bold text-blue-500">{s_data.data?.title}</p>
+                            <p className="italic text-sm text-pink-600"> ▶ {s_data.data?.category}</p>
+                        </div>
+
+                        <p className="italic font-bold "> <span className="text-lime-500">{moment(s_data.data?.createdAt).format("MMMM Do YYYY")}</span>  - <span className="text-pink-600">{moment(s_data.data?.expire).format("MMMM Do YYYY")}</span> </p>
+                    </div>
+                    <p className="text-xl text-gray-800 -mb-4">{s_data.data?.description}</p>
+                    <FooterDivider className="border-1 "></FooterDivider>
+                    <form className="-mt-4" onSubmit={SetSurveyDetails}>
+                        <div className="w-full grid grid-cols-2">
+                            {
+                                s_data.data?.questions?.map((x, index) => {
+                                    return (
+                                        <fieldset key={index} className="flex mb-4 w-full font-bold flex-col gap-2">
+                                            <legend className="mb-2">{`${index + 1}. ${x}`}</legend>
+                                            <div className="flex gap-2">
+                                                <div className="flex items-center gap-2">
+                                                    <Radio id={`${index}Yes`} name={index} defaultChecked={s_data.data.options != null && s_data.data.options[index]} value={true} required />
+                                                    <Label htmlFor={`${index}Yes`}>Yes</Label>
+                                                </div>
+                                                <div className="flex items-center gap-2">
+                                                    <Radio id={`${index}No`}
+                                                        defaultChecked={s_data.data.options != null && !s_data.data.options[index]}
+                                                        name={index} value={false} required />
+                                                    <Label htmlFor={`${index}No`}>No</Label>
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                    )
+                                })
+                            }
+                        </div>
+                        {
+                            s_data.data?.options != null || moment(s_data.data?.expire).isSameOrAfter(moment(), 'year') &&
+                            moment(s_data.data?.expire).isSameOrAfter(moment(), 'month') &&
+                            moment(s_data.data?.expire).isSameOrAfter(moment(), 'date') && <div className="flex justify-center">
+                                <Button className="w-1/2 mt-4" type="submit" isProcessing={vote.isPending} processingSpinner={<AiOutlineLoading className="h-6 w-6 animate-spin" />}>Submit</Button>
+
+                            </div>
+                        }
+
+                    </form>
+                    {
+                        moment(s_data.data?.expire).isSameOrAfter(moment(), 'year') &&
+                        moment(s_data.data?.expire).isSameOrAfter(moment(), 'month') &&
+                        moment(s_data.data?.expire).isSameOrAfter(moment(), 'date') &&
+                        <div className="flex justify-between -mb-4">
+                        <Rating
+                            style={{ maxWidth: 80 }}
+                            value={rating}
+                            itemStyles={customStyles}
+                            items={2}
+                            spaceBetween="medium"
+                            transition="zoom"
+                            onChange={value => ChangeLike(value)}
+                            highlightOnlySelected
+                            isDisabled={changelike.isPending}
+                            readOnly={!rating == 0}
+                            className="flex gap-4"
+                        />
+                        <Button className="bg-red-600" size="sm">Report</Button>
+                    </div>
+                    }
+                    
+                    <FooterDivider className="border-1 "></FooterDivider>
+                    {
+                        user && <form onSubmit={GetCommentData}>
+                            <div className="flex justify-start items-center w-full gap-2">
+                                <Avatar alt="User settings" img={user?.photoURL} rounded />
+                                <TextInput className="flex-1" id="title" minLength={4} name='text' type="text" required />
+                                <Button type="submit">Comment</Button>
+                            </div>
+                        </form>
+                    }
+                    <QueryUtil query={commentdata}>
+
+                        {
+                            commentdata.data?.map((x, index) => {
+                                return (
+                                    <div key={index} className="flex w-full justify-start items-center gap-2 px-5 mt-5">
+                                        <Tooltip content={x.user.name}>
+                                            <Avatar alt={x.user.name} img={x.user.image} />
+                                        </Tooltip>
+                                        <p>{x.text}</p>
+                                    </div>
+                                )
+                            })
+                        }
+
+                    </QueryUtil>
+
+                </Card>
             </QueryUtil>
 
         </div>

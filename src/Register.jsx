@@ -20,7 +20,7 @@ const Register = () => {
             if (toString(password1).length >= 6) {
                 if (/[A-Z]/.test(password1)) {
                     if (/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password1)) {
-                        userData({ name: name, email: email }).then(() => {
+                        userData({ name: name, email: email,image:image  }).then(() => {
                             signUpUser(email, password1)
                                 .then(res => {
                                     updateProfile(res.user, {

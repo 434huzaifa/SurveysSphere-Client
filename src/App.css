@@ -2,3 +2,9 @@
     background-image: url("/feedback.jpg");
     background-repeat: no-repeat;
 }
+
+.active{
+    text-decoration: underline  violet;
+    font-weight: 800;
+    scale: 1.1;
+}

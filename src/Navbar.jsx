@@ -12,9 +12,9 @@ const Navbar2 = () => {
     return (
         <div className='mx-10'>
         <Navbar fluid rounded>
-            <Navbar.Brand href="https://flowbite-react.com">
-                <img src="/favicon.svg" className="mr-3 h-6 sm:h-9" alt="Flowbite React Logo" />
-                <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">Flowbite React</span>
+            <Navbar.Brand href="/">
+                <img src="/survey.png" className="mr-3 h-6 sm:h-9" alt=" Logo" />
+                <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">SurveySphere</span>
             </Navbar.Brand>
             <div className="flex md:order-2">
                 <Dropdown
@@ -37,6 +37,7 @@ const Navbar2 = () => {
                 <NavLink to="/login">Login</NavLink>
                 <NavLink to="/register">Register</NavLink>
                 <NavLink to="/addsurvey">Add Survey</NavLink>
+                <NavLink to="/allsurvey">Survey Page</NavLink>
                 
             </Navbar.Collapse>
         </Navbar>

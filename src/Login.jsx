@@ -24,7 +24,7 @@ const Login = () => {
     async function itsgoogletime() {
         googlemama()
             .then(async (res) => {
-                await userData({ name: res.user.displayName, email: res.user.email}).then(res=>{
+                await userData({image:res.user.photoURL ,name: res.user.displayName, email: res.user.email}).then(res=>{
                     console.log(res);
                     setRole(res.data.role)
                 })

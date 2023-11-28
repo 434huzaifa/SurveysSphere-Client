@@ -28,29 +28,29 @@ const Latest = () => {
                             <Error>There is no data</Error>
                             :
                             <>
-                              
-                                    <Swiper
-                                        slidesPerView={3}
-                                        spaceBetween={30}
-                                        freeMode={true}
-                                        pagination={{
-                                            clickable: true,
-                                        }}
-                                        modules={[FreeMode, Pagination]}
-                                        className="mySwiper mt-4"
-                                    >
-                                        {
+
+                                <Swiper
+                                    slidesPerView={3}
+                                    spaceBetween={30}
+                                    freeMode={true}
+                                    pagination={{
+                                        clickable: true,
+                                    }}
+                                    modules={[FreeMode, Pagination]}
+                                    className="mySwiper mt-4"
+                                >
+                                    {
                                         latest.data.map((x, index) => {
                                             return (
                                                 <SwiperSlide key={index}>
-                                                <SurveyCard x={x}></SurveyCard>
+                                                    <SurveyCard x={x}></SurveyCard>
                                                 </SwiperSlide>
                                             )
                                         })
                                     }
-                                        
-                                    </Swiper>
-                                
+
+                                </Swiper>
+
                             </>
 
 

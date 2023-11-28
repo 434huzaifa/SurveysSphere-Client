@@ -7,7 +7,7 @@ const QueryUtil = ({query,children}) => {
     }else if(query.isError){
         return <Error>{query.error.response.data}</Error>
     }
-    else if(query?.data==null || query?.data.length==0){
+    else if(query.data==null || query?.data.length==0){
         return <Error>No Data</Error>
     }else if(query.isSuccess){
         return <>{children}</>
