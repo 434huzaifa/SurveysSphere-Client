@@ -1,9 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import useAxios from "./useAxios";
 import { Chart } from "react-google-charts";
-import QueryUtil from "./QueryUtil";
 import moment from "moment";
-import { Card } from "flowbite-react";
+import { Card, Spinner } from "flowbite-react";
 import Error from "./Error";
 const PollChart = ({ id, title, createdAt }) => {
     const caxios = useAxios()
@@ -22,8 +21,9 @@ const PollChart = ({ id, title, createdAt }) => {
     };
     return (
         <div>
-            <QueryUtil query={poll}>
-
+            {
+                poll.isLoading ? <Spinner className="w-full" color="pink" aria-label="Extra large spinner example Center-aligned" size="xl" ></Spinner>
+                 :
                 <Card>
                     {
                         poll.data?.length<=1?<Error>NO ONE VOTED</Error>
@@ -39,7 +39,10 @@ const PollChart = ({ id, title, createdAt }) => {
                     }
                     
                 </Card>
-            </QueryUtil>
+            }
+            
+                
+            
         </div>
     );
 };

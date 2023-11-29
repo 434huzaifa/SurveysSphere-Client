@@ -5,7 +5,7 @@ const QueryUtil = ({query,children}) => {
     if (query.isLoading) {
         return <Spinner aria-label="Center-aligned Extra large spinner example p-2" size="xl" ></Spinner>
     }else if(query.isError){
-        return <Error>{query.error.response.data}</Error>
+        return <Error>{query.error?.response?.data || query.error.message}</Error>
     }
     else if(query.data==null || query?.data.length==0){
         return <Error>No Data</Error>

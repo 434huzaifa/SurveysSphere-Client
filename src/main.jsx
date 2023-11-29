@@ -11,11 +11,16 @@ import Login from './Login';
 import AddSurvey from './AddSurvey';
 import Details from './Details';
 import SurveyPage from './SurveyPage';
+import Pro from "./Pro"
+import Dashboard from './Dashboard/Dashboard';
+import Private from './Private';
+import EelementError from './EelementError';
 const qc = new QueryClient();
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App></App>,
+    errorElement:<EelementError/>,
     children: [
       {
         path:"/",
@@ -31,7 +36,7 @@ const router = createBrowserRouter([
       },
       {
         path:"/addsurvey",
-        element:<AddSurvey></AddSurvey>
+        element:<Private><AddSurvey></AddSurvey></Private>
       },
       {
         path:"/details/:id",
@@ -40,6 +45,14 @@ const router = createBrowserRouter([
       {
         path:"/allsurvey",
         element:<SurveyPage></SurveyPage>
+      },
+      {
+        path:'/pro',
+        element:<Pro></Pro>
+      },
+      {
+        path:'/dashboard',
+        element:<Dashboard></Dashboard>
       }
     ]
   }

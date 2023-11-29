@@ -13,7 +13,7 @@ const Login = () => {
         let error = document.getElementById("error")
         error.textContent = ""
         SignIn(email, password).then(() => {
-            if (location?.state != null) {
+            if (location.state != null) {
                 navigate(location.state)
             } else {
                 navigate('/')
@@ -25,10 +25,9 @@ const Login = () => {
         googlemama()
             .then(async (res) => {
                 await userData({image:res.user.photoURL ,name: res.user.displayName, email: res.user.email}).then(res=>{
-                    console.log(res);
                     setRole(res.data.role)
-                })
-                if (location?.state != null) {
+                }).catch(err=>err)
+                if (location.state != null) {
                     navigate(location.state)
                 } else {
                     navigate('/')
