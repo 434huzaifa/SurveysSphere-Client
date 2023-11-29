@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Error from './Error';
 import useAuth from "./useAuth";
 import useAxios from "./useAxios";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 import { AiOutlineLoading } from 'react-icons/ai';
@@ -21,16 +21,24 @@ const Stripe = () => {
         staleTime: 0,
         enabled: !!user
     })
+    const insertPayment=useMutation({
+        mutationKey:[user],
+        mutationFn:async (data)=>{
+            let res = await caxios.post("/pro",data)
+            return res.data
+        },
+        onSuccess:(data)=>{
+            setRole("Pro")
+            Swal.fire(`${data.msg}.`).then(()=>{
+                navigate('/')
+            })
+        }
+    })
     const stripe = useStripe()
     const elements = useElements()
     const [err, setErr] = useState("")
     const handleSubmit = async (event) => {
         event.preventDefault();
-        setErr("")
-        if (payintent.data==null ||payintent.data.clientSecret ) {
-            setErr("Secret Missing")
-        }
-        
         if (!stripe || !elements) {
             return;
         }
@@ -65,13 +73,7 @@ const Stripe = () => {
                 setErr(payError?.message)
             } else {
                 if (paymentIntent.status == "succeeded") {
-                    caxios.get("/pro").then((res)=>{
-                        setRole("Pro")
-                        Swal.fire(`${res.data.msg}.`).then(()=>{
-                            navigate('/')
-                        })
-                    })
-                    
+                    await insertPayment.mutateAsync({paymentid:paymentIntent.id})
                 }
             }
         }
@@ -101,9 +103,9 @@ const Stripe = () => {
                 />
                 <div className='flex justify-center mt-2'>
                     <Tooltip content={`${user?"We want you to be a pro":"Please Login"} `}>
-                        <Button type="submit" isProcessing={payintent.isLoading} 
+                        <Button type="submit" isProcessing={payintent.isLoading ||insertPayment.isPending}
                         processingSpinner={<AiOutlineLoading className="h-6 w-6 animate-spin" />} 
-                        className='text-lg font-bold' disabled={!stripe || !user}>
+                        className='text-lg font-bold' disabled={!stripe || !user ||payintent.isError}>
                             Pay, Only $10
                         </Button>
                     </Tooltip>
