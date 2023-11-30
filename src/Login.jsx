@@ -8,8 +8,8 @@ const Login = () => {
     const location = useLocation()
     function GetFromForm(e) {
         e.preventDefault();
-        let email = e.target.email.value;
-        let password = e.target.password.value;
+        let email = String(e.target.email.value).trim().toLowerCase();
+        let password = String(e.target.password.value).trim();
         let error = document.getElementById("error")
         error.textContent = ""
         SignIn(email, password).then(() => {

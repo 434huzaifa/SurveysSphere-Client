@@ -10,11 +10,11 @@ const Register = () => {
         e.preventDefault();
         let error = document.getElementById("error")
         error.textContent = ""
-        let name = e.target.name.value;
-        let email = e.target.email.value;
-        let image = e.target.image.value;
-        let password1 = e.target.password1.value;
-        let password2 = e.target.password2.value;
+        let name = String(e.target.name.value).trim();
+        let email = String(e.target.email.value).trim();
+        let image = String(e.target.image.value).trim();
+        let password1 = String(e.target.password1.value).trim();
+        let password2 = String(e.target.password2.value).trim();
 
         if (password1 == password2) {
             if (toString(password1).length >= 6) {
