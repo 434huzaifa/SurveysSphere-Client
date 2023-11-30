@@ -1,8 +1,17 @@
-# React + Vite
+# SurveysSphere
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+---
 
-Currently, two official plugins are available:
+- Create Survey effortlessly
+- Manage Survey More effortlessly
+- No need to creat a accout. login with gmail
+- Update Survey with few click
+- For a $10 become pro
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
+
+I encountered some moderate-level challenges during backend development. I utilized Mongoose as my database library. Additionally, certain frontend libraries required data pre-processing. Apart from these two aspects, I did not face any other issues.
+
+---
+
+client live link: https://surveysphere-f19ed.firebaseapp.com/
