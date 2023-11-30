@@ -14,4 +14,4 @@ I encountered some moderate-level challenges during backend development. I utili
 
 ---
 
-client live link: https://surveysphere-f19ed.firebaseapp.com/
+client live link: https://surveysphere-f19ed.web.app
