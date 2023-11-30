@@ -38,9 +38,9 @@ const Login = () => {
     return (
         <div className="my-4">
             <Card>
-                <div className='flex justify-center items-center '>
+                <div className='flex lg:flex-row flex-col justify-center items-center '>
 
-                    <div className='flex-1'>
+                    <div className='flex-1 w-full'>
                         <form className="flex flex-col gap-4" onSubmit={GetFromForm}>
                             <div>
                                 <div className="mb-2 block">
@@ -63,7 +63,7 @@ const Login = () => {
                         <p>If you do not have a account please, <Link to="/register" className='underline text-cyan-500'>Register</Link></p>
                     </div>
                     <div className='flex-1'>
-                        <img src="/login.jpg" alt="" />
+                        <img src="/login.webp" alt="" />
                     </div>
                 </div>
             </Card>

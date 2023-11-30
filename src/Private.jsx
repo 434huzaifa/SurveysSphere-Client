@@ -19,7 +19,7 @@ const Private = ({ children, permission }) => {
         return (
             <div className="flex flex-col justify-center items-center h-screen">
                 <p className="w-full text-9xl font-black text-center text-red-700"> You are not allowed to access this URL </p>
-                <img src="/Unauthorize.png" alt="" />
+                <img src="/Unauthorize.webp" alt="" />
             </div>
         )
     

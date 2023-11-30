@@ -37,7 +37,7 @@ const Pro = () => {
 
                     </div>
                     <div className="flex-1 rounded-lg">
-                        <img src="/pro.jpg" className="rounded-lg" />
+                        <img src="/pro.webp" className="rounded-lg" />
                     </div>
                 </div>
             </Card>

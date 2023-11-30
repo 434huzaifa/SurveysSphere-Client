@@ -5,7 +5,6 @@ import { useState } from "react";
 import SurveyCard from "./SurveyCard";
 import { Button, Checkbox, Label, TextInput, Tooltip } from "flowbite-react";
 import { TbSortAscendingNumbers, TbSortDescendingNumbers } from "react-icons/tb";
-
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { AiOutlineLoading } from "react-icons/ai";
@@ -28,9 +27,9 @@ const SurveyPage = () => {
         let formdata = new FormData(e.target)
         let data = Object.fromEntries(formdata)
         data.category = formdata.getAll('category')
+        console.log(data);
         if (data.category.length != 0) {
             let c_search = `keyword=${data.keyword}&asc=${asc}&category=${encodeURIComponent(data.category.join(','))}`
-            // search=`/getallsurvey?${c_search}`
             setSearch(`/getallsurvey?${c_search}`)
             survey.refetch()
             
@@ -75,7 +74,7 @@ const SurveyPage = () => {
                                     </Button>
                                 </Tooltip>
                             </div>
-                            <div className="flex justify-between mt-2">
+                            <div className="grid  md::grid-cols-3 sm:grid-cols-2 grid-cols-1 mt-2">
                                 <div className="flex items-center gap-2">
                                     <Checkbox name="category" id="acceptMarketResearch" value="Market Research" defaultChecked />
                                     <Label htmlFor="acceptMarketResearch" className="flex">
@@ -119,6 +118,8 @@ const SurveyPage = () => {
                                     </Label>
                                 </div>
                             </div>
+                            
+                            
                         </div>
                         <div className="flex gap-2">
                             <Tooltip content="Empty Keyword will bring all the survey of the selected category">
@@ -131,7 +132,7 @@ const SurveyPage = () => {
                 </form>
             </div>
             <QueryUtil query={survey}>
-                <div className="grid grid-cols-4 gap-2">
+                <div className="grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 grid-cols-1  gap-2 h-auto">
                     {
                         survey.data?.map((x, index) => {
                             return (

@@ -8,8 +8,10 @@ import 'swiper/css/pagination';
 import { FreeMode, Pagination } from 'swiper/modules';
 import SurveyCard from "../SurveyCard";
 import { Spinner } from "flowbite-react";
+import { useWindowWidth } from "@react-hook/window-size";
 const Latest = () => {
     const caxios = useAxios()
+    const Width=useWindowWidth()
     const latest = useQuery({
         queryKey: ['latest'],
         queryFn: async () => {
@@ -30,25 +32,26 @@ const Latest = () => {
                             <>
 
                                 <Swiper
-                                    slidesPerView={3}
+                                    slidesPerView={Width>=1024?3:Width  >=768?2:1}
                                     spaceBetween={30}
                                     freeMode={true}
                                     pagination={{
                                         clickable: true,
                                     }}
                                     modules={[FreeMode, Pagination]}
-                                    className="mySwiper mt-4"
+                                    className="mySwiper mt-4 "
                                 >
-                                    {
-                                        latest.data.map((x, index) => {
-                                            return (
-                                                <SwiperSlide key={index}>
-                                                    <SurveyCard x={x}></SurveyCard>
-                                                </SwiperSlide>
-                                            )
-                                        })
-                                    }
-
+                                    
+                                        {
+                                            latest.data.map((x, index) => {
+                                                return (
+                                                    <SwiperSlide key={index} className="mb-7 mt-4" >
+                                                        <SurveyCard x={x}></SurveyCard>
+                                                    </SwiperSlide>
+                                                )
+                                            })
+                                        }
+                                    
                                 </Swiper>
 
                             </>

@@ -7,7 +7,7 @@ const Footer2 = () => {
                 <div className="w-full justify-between sm:flex sm:items-center sm:justify-between">
                     <Footer.Brand
                         href="/"
-                        src="/survey.png"
+                        src="/survey.webp"
                         alt="Logo"
                         name="SurveySphere"
                     />

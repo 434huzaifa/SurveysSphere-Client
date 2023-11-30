@@ -61,12 +61,12 @@ const Register = () => {
     return (
         <div className="my-4">
             <Card >
-                <div className="flex justify-center items-center">
+                <div className="flex lg:flex-row flex-col justify-center items-center">
                     <div className="flex-1">
-                        <img src="/register.jpg" alt="" />
+                        <img src="/register.webp" alt="" />
                     </div>
-                    <div className="flex-1">
-                        <form className="flex flex-col gap-4" onSubmit={GetUserAndCreate}>
+                    <div className="flex-1 w-full">
+                        <form className="flex flex-col gap-4 " onSubmit={GetUserAndCreate}>
 
                             <div>
                                 <div className="mb-2 block">

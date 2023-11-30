@@ -8,7 +8,7 @@ function App() {
   return (
     <>
     <Navbar2></Navbar2>
-    <div className="mx-40">
+    <div className="xl:mx-40 lg:mx-12 mx-2">
     <Outlet></Outlet>
     </div>
     <Footer2></Footer2>

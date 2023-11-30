@@ -24,6 +24,7 @@ const Auth = ({children}) => {
     }
     function LogOut() {
       setLoading(false)
+      setRole(null)
       caxios.post('/logout').then().catch(err=>err)
       return signOut(auth)
     }

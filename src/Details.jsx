@@ -147,27 +147,27 @@ const Details = () => {
             }
 
 
-            <Card className="my-4 ">
+            <Card className="my-4">
                 {
                     s_data.isLoading ? <Spinner className="w-full" color="pink" aria-label="Extra large spinner example Center-aligned" size="xl" ></Spinner>
                         :
                         <>
-                            <div className="flex justify-between items-center  ">
+                            <div className="flex lg:flex-row flex-col justify-between items-center ">
                                 <div className="flex items-center gap-2">
-                                    <p className="text-4xl  font-bold text-blue-500">{s_data.data?.title}</p>
-                                    <p className="italic text-sm text-pink-600"> ▶ {s_data.data?.category}</p>
+                                    <p className="lg:text-4xl text-xl font-bold text-blue-500">{s_data.data?.title}</p>
+                                    <p className="italic lg:text-sm text-xs text-pink-600"> ▶ {s_data.data?.category}</p>
                                 </div>
-                                <p className="italic font-bold "> <span className="text-lime-500">{moment(s_data.data?.createdAt).format("MMMM Do YYYY")}</span>  - <span className="text-pink-600">{moment(s_data.data?.expire).format("MMMM Do YYYY")}</span> </p>
+                                <p className="italic lg:text-sm text-xs font-bold "> <span className="text-lime-500">{moment(s_data.data?.createdAt).format("MMMM Do YYYY")}</span>  - <span className="text-pink-600">{moment(s_data.data?.expire).format("MMMM Do YYYY")}</span> </p>
                             </div>
-                            <p className="text-xl text-gray-800 -mb-4">{s_data.data?.description}</p>
+                            <p className="lg:text-xl text-sm text-gray-800 -mb-4">{s_data.data?.description}</p>
                             <FooterDivider className="border-1 "></FooterDivider>
                             <form className="-mt-4 flex justify-center items-center  gap-2 flex-col" onSubmit={SetSurveyDetails}>
-                                <div className="grid grid-cols-2 gap-x-8 gap-y-2 justify-center">
+                                <div className="grid lg:grid-cols-2 grid-cols-1 gap-x-8 gap-y-2 justify-center">
                                     {
                                         s_data.data?.questions?.map((x, index) => {
                                             return (
-                                                <fieldset key={index} className="flex mb-4 w-full font-bold flex-col gap-2">
-                                                    <legend className="mb-2 break-all">{`${index + 1}. ${x}`}</legend>
+                                                <fieldset key={index} className="flex justify-center items-center lg:text-md text-xs mb-4 w-full font-bold flex-col gap-2">
+                                                    <legend className="mb-2 text-center break-all">{`${index + 1}. ${x}`}</legend>
                                                     <div className="flex gap-2">
                                                         <div className="flex items-center gap-2">
                                                             <Radio id={`${index}Yes`} name={index} defaultChecked={s_data.data.options != null && s_data.data.options[index]} value={true} required />
@@ -250,11 +250,11 @@ const Details = () => {
                     commentdata.isLoading ? <Spinner className="w-full" color="pink" aria-label="Extra large spinner example Center-aligned" size="xl" ></Spinner> :
                         commentdata.data?.map((x, index) => {
                             return (
-                                <div key={index} className="flex w-full justify-start items-center gap-2 px-5 mt-5">
+                                <div key={index} className="flex md:flex-row flex-col border p-1 rounded-md w-full justify-start items-top gap-2 px-5 mt-5">
                                     <Tooltip content={x.user.name}>
-                                        <Avatar alt={x.user.name} img={x.user.image} />
+                                        <Avatar alt={x.user.name} img={x.user.image} className="w-14"/>
                                     </Tooltip>
-                                    <p>{x.text}</p>
+                                    <p className="lg:text-md text-sm">{x.text}</p>
                                 </div>
                             )
                         })

@@ -58,8 +58,8 @@ const Testimonial = () => {
     ];
     return (
         <div className='my-5'>
-            <Parallax bgImage="/background.jpg" className="rounded-md" strength={500}>
-                <div style={{ height: 500 }}>
+            <Parallax bgImage="/background.webp" className="rounded-md lg:h-auto lg:w-auto h-[55%]" strength={500}>
+                <div className='xl:h-[70vh] md:h-[50vh] h-[34vh]'>
                     <Swiper
                         modules={[Navigation]}
                         navigation={true}
@@ -69,7 +69,7 @@ const Testimonial = () => {
                             clientReviews.map((x, index) => {
                                 return (
                                     <SwiperSlide key={index}>
-                                        <div className=' p-8 w-full h-full'>
+                                        <div className=' md:p-10 w-full h-full'>
                                         <TestiCard x={x}></TestiCard>
                                         </div>
                                     </SwiperSlide>

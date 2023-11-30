@@ -11,12 +11,12 @@ const SurveyCard = ({ x }) => {
     }
     return (
         <motion.button whileHover={{ scale: 1.1,zIndex:10 }}
-            whileTap={{ scale: 0.9 }} className="w-full h-[230px] relative">
+            whileTap={{ scale: 0.9 }} className="w-full h-[300px] relative">
             <Card id={x._id} onClick={() => { SeeDetails(x._id) }} className="w-full h-full">
-                    <p className="text-2xl text-blue-500 font-bold">{x.title}</p>
+                    <p className="lg:text-2xl text-md text-blue-500 font-bold">{x.title}</p>
                     <p className="italic font-extralight">{String(x.description).slice(0, 40)}...</p>
                     <p className="italic font-bold text-red-400">{moment(x.expire).format("MMMM Do YYYY")}</p>
-                <div className="mt-2 flex w-full justify-between items-end absolute bottom-2 left-0 right-0 px-6">
+                <div className=" flex w-full justify-between items-end absolute bottom-2 left-0 right-0 px-6">
                     <div className="flex items-center gap-1 text-lg"><AiOutlineLike />{x.like}</div>
                     <div className="flex items-center gap-1 text-lg"><AiOutlineDislike />{x.dislike}</div>
                     <div className="flex items-center gap-1 text-lg"><AiOutlineComment />{x.totalcomment}</div>
