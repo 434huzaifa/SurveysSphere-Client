@@ -192,7 +192,7 @@ const Details = () => {
                                             moment(s_data.data?.expire).isSameOrAfter(moment(), 'date')) ?
                                         <div className="flex justify-center flex-col items-center w-full">
                                             {
-                                             s_data.data?.options != null ||  <Button className="w-1/2 mt-4" disabled={!user} type="submit" isProcessing={vote.isPending} processingSpinner={<AiOutlineLoading className="h-6 w-6 animate-spin" />}>Submit</Button>
+                                             s_data.data?.options != null || ['Pro','User'].includes(role) &&  <Button className="w-1/2 mt-4" disabled={!user} type="submit" isProcessing={vote.isPending} processingSpinner={<AiOutlineLoading className="h-6 w-6 animate-spin" />}>Submit</Button>
                                             }
 
                                             
@@ -210,7 +210,7 @@ const Details = () => {
                 {
                     moment(s_data.data?.expire).isSameOrAfter(moment(), 'year') &&
                     moment(s_data.data?.expire).isSameOrAfter(moment(), 'month') &&
-                    moment(s_data.data?.expire).isSameOrAfter(moment(), 'date') && user &&
+                    moment(s_data.data?.expire).isSameOrAfter(moment(), 'date') && user && ['Pro','User'].includes(role) &&
                     <div className="flex justify-between -mb-4">
                         <Rating
                             style={{ maxWidth: 80 }}
@@ -225,7 +225,10 @@ const Details = () => {
                             readOnly={!rating == 0}
                             className="flex gap-4"
                         />
-                        <Button className="bg-red-600" size="sm" isProcessing={reportsurvey.isPending} onClick={ReportIt}>Report</Button>
+                        {
+                            ['Pro','User'].includes(role) && <Button className="bg-red-600" size="sm" isProcessing={reportsurvey.isPending} onClick={ReportIt}>Report</Button>
+                        }
+                        
                     </div>
                 }
 

@@ -64,6 +64,7 @@ const UpdateSurvey = () => {
             delete data[`q${index}`];
         }
         data={...data,...t_q}
+        data.expire=startDate
         data.qsize=count
         mutation.mutateAsync(data)
     }

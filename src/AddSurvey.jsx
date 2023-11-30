@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Card, Select, Textarea } from "flowbite-react";
 import { Button, Label, TextInput } from 'flowbite-react';
 import { Datepicker } from 'flowbite-react';
@@ -7,6 +7,7 @@ import useAxios from "./useAxios";
 import { useNavigate } from "react-router-dom";
 const AddSurvey = () => {
     const caxios = useAxios()
+    const qc=useQueryClient()
     const navigate = useNavigate()
     const mutation = useMutation({
         mutationFn: async (data) => {
@@ -14,6 +15,8 @@ const AddSurvey = () => {
             return res.data
         },
         onSuccess: () => {
+            qc.invalidateQueries(['latest'])
+            qc.invalidateQueries(['survey'])
             navigate('/')
         }
     })
@@ -32,7 +35,7 @@ const AddSurvey = () => {
         data={...data,...t_q}
         data.qsize=count
         console.log(data);
-        // mutation.mutateAsync(data)
+        mutation.mutateAsync(data)
     }
     let q=new Array(10).fill("")
     return (

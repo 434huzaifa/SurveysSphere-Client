@@ -42,7 +42,6 @@ const SurveyPage = () => {
 
     }
     function clearall() {
-        // search=`/getallsurvey?asc=${asc}`;
         setAsc(false)  
         let e=document.getElementById("search")
         e.reset()

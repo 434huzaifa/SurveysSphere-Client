@@ -8,6 +8,7 @@ import { FilteringMode, SortDirection, SortingMode } from 'ka-table/enums';
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
+import moment from "moment";
 const ROW_MOUSE_ENTER = 'ROW_MOUSE_ENTER'; // mouse event
 const ROW_MOUSE_LEAVE = 'ROW_MOUSE_LEAVE';
 const SurveyManager = ({admin}) => {
@@ -54,6 +55,14 @@ const SurveyManager = ({admin}) => {
             title: "Reason",
             dataType: DataType.String,
             style: { color: "red" },
+            isHeaderFilterPopupShown: false,
+            isFilterable: false,
+            isEditable: false,
+        },
+        {
+            key: "createdAt",
+            title: "Create Date",
+            dataType: DataType.Date,
             isHeaderFilterPopupShown: false,
             isFilterable: false,
             isEditable: false,
@@ -204,6 +213,13 @@ const SurveyManager = ({admin}) => {
                                                 return (
                                                     <>
                                                         {`${rowData.isPublish ? "Published" : "Unpublished"}`}
+                                                    </>
+                                                )
+                                            }
+                                            if (column.key=='createdAt') {
+                                                return (
+                                                    <>
+                                                        {moment(rowData.createdAt).format("DD MMM, YYYY")}
                                                     </>
                                                 )
                                             }
