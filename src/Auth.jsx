@@ -9,16 +9,21 @@ const Auth = ({children}) => {
     const caxios=useAxios()
     const [user, setUser] = useState([]);
     const [role, setRole] = useState(null);
+    const [loading,setLoading]=useState(true)
     function signUpUser(email, password) {
+      setLoading(true)
       return createUserWithEmailAndPassword(auth, email, password)
     }
     function googlemama() {
+      setLoading(true)
       return signInWithPopup(auth, provider)
     }
     function SignIn(email, password) {
+      setLoading(true)
       return signInWithEmailAndPassword(auth, email, password)
     }
     function LogOut() {
+      setLoading(false)
       caxios.post('/logout').then().catch(err=>err)
       return signOut(auth)
     }
@@ -30,12 +35,19 @@ const Auth = ({children}) => {
       const unSubscribe = onAuthStateChanged(auth, currentUser => {
         setUser(currentUser);
         if (currentUser && !!currentUser?.email) {
+          
           if (role!=null) {
-            caxios.post('/jsonwebtoken',{email:currentUser.email,role:role}).then(res=>res).catch(error=>console.log(error))
+            caxios.post('/jsonwebtoken',{email:currentUser.email,role:role}).then(res=>{
+              setLoading(false)
+              return res
+            }).catch(error=>console.log(error))
           }else{
             caxios.get(`/getrole?mail=${currentUser?.email}`).then(res=>{
               setRole(res.data)
-              caxios.post('/jsonwebtoken',{email:currentUser.email,role:res.data}).then(res=>res).catch(error=>console.log(error))
+              caxios.post('/jsonwebtoken',{email:currentUser.email,role:res.data}).then(res=>{
+                setLoading(false)
+                return res
+              }).catch(error=>console.log(error))
             })
           }
           
@@ -55,7 +67,8 @@ const Auth = ({children}) => {
         googlemama,
         userData,
         role,
-        setRole
+        setRole,
+        loading
         
       }
     

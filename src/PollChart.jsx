@@ -16,11 +16,11 @@ const PollChart = ({ id, title, createdAt }) => {
     const options = {
         chart: {
             title: title,
-            subtitle: `Voting result from ${createdAt} to ${moment().format("MMMM Do YYYY")}`,
+            subtitle: `Voting result from ${ moment(createdAt).format("MMMM Do YYYY")} to ${moment().format("MMMM Do YYYY")}`,
         },
     };
     return (
-        <div>
+        <div className="my-4">
             {
                 poll.isLoading ? <Spinner className="w-full" color="pink" aria-label="Extra large spinner example Center-aligned" size="xl" ></Spinner>
                  :

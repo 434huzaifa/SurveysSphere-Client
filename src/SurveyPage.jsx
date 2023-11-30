@@ -11,7 +11,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { AiOutlineLoading } from "react-icons/ai";
 const SurveyPage = () => {
     const caxios = useAxios()
-    const [asc, setAsc] = useState(true)
+    const [asc, setAsc] = useState(false)
     const [search,setSearch]=useState(`/getallsurvey?asc=${asc}`)
     // let search=`/getallsurvey?asc=${asc}`
     const survey = useQuery({
@@ -43,7 +43,7 @@ const SurveyPage = () => {
     }
     function clearall() {
         // search=`/getallsurvey?asc=${asc}`;
-        setAsc(true)  
+        setAsc(false)  
         let e=document.getElementById("search")
         e.reset()
         setSearch(`/getallsurvey?asc=${asc}`)

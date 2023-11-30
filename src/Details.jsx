@@ -10,6 +10,8 @@ import { AiOutlineLoading } from "react-icons/ai";
 import moment from "moment";
 import PollChart from "./PollChart";
 import Error from "./Error";
+import Swal from "sweetalert2";
+import { ToastContainer } from "react-toastify";
 
 const Details = () => {
     const [rating, setRating] = useState(0)
@@ -100,10 +102,43 @@ const Details = () => {
         insertcomment.mutateAsync(data)
         e.target.reset()
     }
-    
+    const reportsurvey=useMutation({
+        mutationFn:async (data)=>{
+            let res=await caxios.post("/reportsurvey",data)
+            return res.data
+        },
+        onSuccess:()=>{
+            Swal.fire({
+                title:"Report Successfully",
+                icon:"success"
+            })
+        }
+    })
+     function ReportIt() {
+        Swal.fire({
+            title:"Do you want to report this for inappropriate survey?",
+            icon:"question",
+            showCancelButton:true,
+            showConfirmButton:true,
+        }).then(async swaldata=>{
+            if (swaldata.isConfirmed) {
+                reportsurvey.mutateAsync({id})
+            }
+        })
+    }
     return (
         <div>
-            
+            <ToastContainer
+                position="top-left"
+                autoClose={3000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light" />
             {
                 s_data.data?.options != null ? <PollChart id={id} title={s_data.data?.title} createdAt={moment(s_data.data?.createdAt).format("MMMM Do YYYY")}></PollChart> :
                 (moment(s_data.data?.expire).isBefore(moment(), 'year') ||
@@ -156,8 +191,11 @@ const Details = () => {
                                             moment(s_data.data?.expire).isSameOrAfter(moment(), 'month') &&
                                             moment(s_data.data?.expire).isSameOrAfter(moment(), 'date')) ?
                                         <div className="flex justify-center flex-col items-center w-full">
+                                            {
+                                             s_data.data?.options != null ||  <Button className="w-1/2 mt-4" disabled={!user} type="submit" isProcessing={vote.isPending} processingSpinner={<AiOutlineLoading className="h-6 w-6 animate-spin" />}>Submit</Button>
+                                            }
 
-                                            <Button className="w-1/2 mt-4" disabled={!user} type="submit" isProcessing={vote.isPending} processingSpinner={<AiOutlineLoading className="h-6 w-6 animate-spin" />}>Submit</Button>
+                                            
                                             {
                                                 !user && <p className="w-full text-center my-4 italic text-red-600 text-lg font-bold">You need to login for Participate,Like,Dislike and Comment.  <Link to='/login' className="text-blue-500 underline">Click here to Login</Link> </p>
                                             }
@@ -187,7 +225,7 @@ const Details = () => {
                             readOnly={!rating == 0}
                             className="flex gap-4"
                         />
-                        <Button className="bg-red-600" size="sm" >Report</Button>
+                        <Button className="bg-red-600" size="sm" isProcessing={reportsurvey.isPending} onClick={ReportIt}>Report</Button>
                     </div>
                 }
 
@@ -217,6 +255,9 @@ const Details = () => {
                                 </div>
                             )
                         })
+                }
+                {
+                     commentdata.data?.length==0 && <Error>No One Commented</Error>
                 }
 
 

@@ -5,12 +5,9 @@ import { Datepicker } from 'flowbite-react';
 import { AiOutlineLoading } from 'react-icons/ai';
 import useAxios from "./useAxios";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
-import Error from "./Error";
 const AddSurvey = () => {
     const caxios = useAxios()
     const navigate = useNavigate()
-    const [qsize, setQsize] = useState(1)
     const mutation = useMutation({
         mutationFn: async (data) => {
             let res = await caxios.post('/insertsurvey', data)
@@ -23,11 +20,21 @@ const AddSurvey = () => {
     async function SubmitSurvey(e) {
         e.preventDefault()
         let data = Object.fromEntries(new FormData(e.target))
-        data.qsize=qsize
+        let count=0
+        let t_q={}
+        for (let index = 0; index < 10; index++) {
+            if (data[`q${index}`]!="") {
+                t_q[`q${count}`]=data[`q${index}`]
+                count++;
+            }
+            delete data[`q${index}`];
+        }
+        data={...data,...t_q}
+        data.qsize=count
         console.log(data);
-        mutation.mutateAsync(data)
+        // mutation.mutateAsync(data)
     }
-    let q = new Array(qsize).fill("")
+    let q=new Array(10).fill("")
     return (
         <div className="my-4">
             <Card>
@@ -65,7 +72,7 @@ const AddSurvey = () => {
                         <Datepicker minDate={new Date()} name="expire" id="expire"
                         />
                     </div>
-                    
+                    <p className="w-full text-center italic text-blue-600">Keep the question field empty if you have less than 10 question</p>
                     {
                         q.map((x, index) => {
                             return (
@@ -73,14 +80,12 @@ const AddSurvey = () => {
                                     <div className="mb-2 block">
                                         <Label htmlFor={`q${index}`} value={`Question No. ${parseInt(index)+1}`} />
                                     </div>
-                                    <TextInput id={`q${index}`} minLength={4} name={`q${index}`} type="text" required />
+                                    <TextInput id={`q${index}`} minLength={4} name={`q${index}`} type="text" />
                                 </div>
                             )
                         })
                     }
-                    {
-                        qsize<10? <Button className="mt-4" onClick={()=>setQsize(prev => prev + 1)}>Add Question</Button>:<Error>Right now we allowed max 10 question</Error>
-                    }
+
                     <Button type="submit" className="mt-4 w-full" isProcessing={mutation.isPending} processingSpinner={<AiOutlineLoading className="h-6 w-6 animate-spin" />} >Post</Button>
                 </form>
 
