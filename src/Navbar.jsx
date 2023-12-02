@@ -63,8 +63,11 @@ const Navbar2 = () => {
                         <NavLink to="/allsurvey" className="sm:text-sm text-xs lg:text-md">Survey Page</NavLink>
 
                         {
-                            location.pathname == "/" && role == "User" && <NavLink to="/pro" className="bg-green-300 p-2 rounded-md sm:text-sm text-xs lg:text-md">Become Pro</NavLink>
+                            location.pathname == "/" && role=="User" && <NavLink to="/pro" className="bg-green-300 p-2 rounded-md sm:text-sm text-xs lg:text-md">Become Pro</NavLink>
 
+                        }
+                        {
+                            user==null  && <NavLink to="/pro" className="bg-green-300 p-2 rounded-md sm:text-sm text-xs lg:text-md">Become Pro</NavLink>
                         }
                         {
                             role == "Admin" && <NavLink to="/dashboard" className="sm:text-sm text-xs lg:text-md">Dashboard</NavLink>
