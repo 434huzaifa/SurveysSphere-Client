@@ -27,7 +27,6 @@ const SurveyPage = () => {
         let formdata = new FormData(e.target)
         let data = Object.fromEntries(formdata)
         data.category = formdata.getAll('category')
-        console.log(data);
         if (data.category.length != 0) {
             let c_search = `keyword=${data.keyword}&asc=${asc}&category=${encodeURIComponent(data.category.join(','))}`
             setSearch(`/getallsurvey?${c_search}`)

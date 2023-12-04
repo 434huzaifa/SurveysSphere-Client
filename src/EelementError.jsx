@@ -2,7 +2,6 @@ import { Button } from "flowbite-react";
 import { Link, useRouteError } from "react-router-dom";
 const EelementError = () => {
     const error = useRouteError()
-    console.log(error);
     return (
         <div className="w-screen h-screen">
         {

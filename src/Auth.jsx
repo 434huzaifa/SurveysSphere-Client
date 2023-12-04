@@ -34,7 +34,6 @@ const Auth = ({ children }) => {
   }
   useEffect(() => {
     const unSubscribe = onAuthStateChanged(auth, currentUser => {
-    console.log("🔥 ~ file: Auth.jsx ~ line 37 ~ currentUser", currentUser)
       setUser(currentUser);
       if (currentUser && !!currentUser?.email) {
         if (role != null) {

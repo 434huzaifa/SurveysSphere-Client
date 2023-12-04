@@ -68,7 +68,6 @@ const Stripe = () => {
                     },
                 },
             );
-            console.log(paymentIntent);
             if (payError) {
                 setErr(payError?.message)
             } else {

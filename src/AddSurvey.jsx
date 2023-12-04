@@ -34,7 +34,6 @@ const AddSurvey = () => {
         }
         data={...data,...t_q}
         data.qsize=count
-        console.log(data);
         mutation.mutateAsync(data)
     }
     let q=new Array(10).fill("")
